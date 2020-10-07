@@ -1,7 +1,7 @@
 package com.es.movility.challenge.components.transformer;
 
+import com.es.movility.challenge.components.mapper.Mapper;
 import com.es.movility.challenge.dtos.SequenceDto;
-import com.es.movility.challenge.components.mapper.MapperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @Component
 public class TransformerImpl implements Transformer{
 
-    private final MapperImpl mapperImpl;
+    private final Mapper mapper;
     private static final String regex = "[\\d][\\s][\\d][\\s][A-Z]" + Strings.LINE_SEPARATOR + "(.*)";
     private static final String BLANK_SPACE = " ";
 
@@ -35,7 +35,7 @@ public class TransformerImpl implements Transformer{
         while (matcher.find()) {
             String[] rawLine = matcher.group(0).split(Strings.LINE_SEPARATOR);
             String[] position = rawLine[0].split(BLANK_SPACE);
-            SequenceDto sequenceDto = mapperImpl.toDto(rawLine, position);
+            SequenceDto sequenceDto = mapper.toDto(rawLine, position);
             sequences.add(sequenceDto);
         }
 

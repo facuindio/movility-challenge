@@ -1,7 +1,7 @@
 package com.es.movility.challenge.services.mower;
 
-import com.es.movility.challenge.components.strategy.MoverStrategyImpl;
-import com.es.movility.challenge.components.transformer.TransformerImpl;
+import com.es.movility.challenge.components.strategy.MoverStrategy;
+import com.es.movility.challenge.components.transformer.Transformer;
 import com.es.movility.challenge.dtos.InputDto;
 import com.es.movility.challenge.dtos.MaxPositionDto;
 import com.es.movility.challenge.dtos.PositionDto;
@@ -21,10 +21,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequiredArgsConstructor
 public class MowerServiceImpl implements MowerService {
 
-    private final TransformerImpl transformerImpl;
-    private final MoverStrategyImpl moverStrategyImpl;
+    private final Transformer transformer;
+    private final MoverStrategy moverStrategy;
+    private final PositionService positionService;
     private final MaxPositionDto maxPositionDto;
-    private final PositionService positionServiceImpl;
 
     public List<PositionDto> processInput(InputDto inputDto) {
         List<PositionDto> finalPositionServices = Lists.newArrayList();
@@ -32,7 +32,7 @@ public class MowerServiceImpl implements MowerService {
         setMaxValues(inputDto);
 
         log.debug("Processing input...");
-        List<SequenceDto> positionsAndInstructions = transformerImpl.transform(inputDto.getInput());
+        List<SequenceDto> positionsAndInstructions = transformer.transform(inputDto.getInput());
         positionsAndInstructions.forEach(s -> finalPositionServices.add(
                 getFinalCoordinates(s, counter))
         );
@@ -59,8 +59,8 @@ public class MowerServiceImpl implements MowerService {
     private void executeMovements(List<String> movements, AtomicReference<PositionDto> nextPosition, AtomicInteger counter) {
         for (String movement : movements) {
             PositionDto positionDto = nextPosition.get();
-            if (positionServiceImpl.isPositionOutOfBounds(maxPositionDto, positionDto.getCoordinates() ,counter)) break;
-            moverStrategyImpl.setNextPosition(movement, nextPosition);
+            if (positionService.isPositionOutOfBounds(maxPositionDto, positionDto.getCoordinates() ,counter)) break;
+            moverStrategy.setNextPosition(movement, nextPosition);
         }
         log.debug("The last position of Mower {}  was: {}", counter.get(), nextPosition.get());
     }

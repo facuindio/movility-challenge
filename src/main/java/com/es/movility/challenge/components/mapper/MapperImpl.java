@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class MapperImpl implements Mapper{
+public class MapperImpl implements Mapper {
 
     private static final int HORIZONTAL = 0;
     private static final int VERTICAL = 1;
