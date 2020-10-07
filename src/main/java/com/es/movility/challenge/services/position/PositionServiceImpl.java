@@ -2,29 +2,28 @@ package com.es.movility.challenge.services.position;
 
 import com.es.movility.challenge.dtos.MaxPositionDto;
 import com.es.movility.challenge.dtos.Coordinates;
+import com.es.movility.challenge.dtos.PositionDto;
 import com.es.movility.challenge.enums.CardinalOrientation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import javax.xml.ws.ServiceMode;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Builder
-@Getter
-@Setter
 @Slf4j
-public class Position implements Serializable {
+@Service
+public class PositionServiceImpl implements PositionService {
 
     private static final String POSITION_STRING_FORMAT = "%s %s %s";
     private static final String OUT_OF_PLATEAU_MSG = "Mower %s has left the plateau";
 
-    private Coordinates coordinates;
-    private CardinalOrientation cardinalOrientation;
-
-    public boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto, final AtomicInteger counter) {
-        if (isPositionOutOfBounds(maxPositionDto)) {
+    @Override
+    public boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto, Coordinates coordinates ,final AtomicInteger counter) {
+        if (isPositionOutOfBounds(maxPositionDto, coordinates)) {
             String message = String.format(OUT_OF_PLATEAU_MSG, counter.get());
             log.debug(message);
             return true;
@@ -32,19 +31,11 @@ public class Position implements Serializable {
         return false;
     }
 
-    private boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto){
+    private boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto, Coordinates coordinates){
         return coordinates.isPositionOutOfRange(
                 maxPositionDto.getMaxHorizontalPosition(),
                 maxPositionDto.getMaxVerticalPosition()
         );
-    }
-
-    @Override
-    public String toString() {
-        return String.format(POSITION_STRING_FORMAT,
-                coordinates.getHorizontal(),
-                coordinates.getVertical(),
-                this.cardinalOrientation.name());
     }
 
 }

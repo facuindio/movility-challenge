@@ -1,7 +1,7 @@
 package com.es.movility.challenge.components.mover;
 
+import com.es.movility.challenge.dtos.PositionDto;
 import com.es.movility.challenge.enums.Axis;
-import com.es.movility.challenge.services.position.Position;
 import com.es.movility.challenge.enums.CardinalOrientation;
 import com.es.movility.challenge.enums.Direction;
 import lombok.extern.slf4j.Slf4j;
@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class SouthMover implements Mover {
 
-    public Position processInstructions(Position position, Direction direction) {
+    public PositionDto processInstructions(PositionDto positionDto, Direction direction) {
         log.debug("Moving from south...");
         switch (direction) {
             case L:
-                position.setCardinalOrientation(CardinalOrientation.W);
-                return position;
+                positionDto.setCardinalOrientation(CardinalOrientation.W);
+                return positionDto;
             case R:
-                position.setCardinalOrientation(CardinalOrientation.E);
-                return position;
+                positionDto.setCardinalOrientation(CardinalOrientation.E);
+                return positionDto;
             default:
-                return move(position, NEGATIVE_MOVEMENT, Axis.V);
+                return move(positionDto, NEGATIVE_MOVEMENT, Axis.V);
         }
     }
 

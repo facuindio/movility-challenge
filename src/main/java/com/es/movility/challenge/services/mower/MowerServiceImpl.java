@@ -1,11 +1,12 @@
 package com.es.movility.challenge.services.mower;
 
-import com.es.movility.challenge.components.strategy.MoverStrategy;
-import com.es.movility.challenge.components.transformer.Transformer;
-import com.es.movility.challenge.dtos.MaxPositionDto;
-import com.es.movility.challenge.dtos.SequenceDto;
+import com.es.movility.challenge.components.strategy.MoverStrategyImpl;
+import com.es.movility.challenge.components.transformer.TransformerImpl;
 import com.es.movility.challenge.dtos.InputDto;
-import com.es.movility.challenge.services.position.Position;
+import com.es.movility.challenge.dtos.MaxPositionDto;
+import com.es.movility.challenge.dtos.PositionDto;
+import com.es.movility.challenge.dtos.SequenceDto;
+import com.es.movility.challenge.services.position.PositionService;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,33 +21,34 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequiredArgsConstructor
 public class MowerServiceImpl implements MowerService {
 
-    private final Transformer transformer;
-    private final MoverStrategy moverStrategy;
+    private final TransformerImpl transformerImpl;
+    private final MoverStrategyImpl moverStrategyImpl;
     private final MaxPositionDto maxPositionDto;
+    private final PositionService positionServiceImpl;
 
-    public List<Position> processInput(InputDto inputDto) {
-        List<Position> finalPositions = Lists.newArrayList();
+    public List<PositionDto> processInput(InputDto inputDto) {
+        List<PositionDto> finalPositionServices = Lists.newArrayList();
         AtomicInteger counter = new AtomicInteger(0);
         setMaxValues(inputDto);
 
         log.debug("Processing input...");
-        List<SequenceDto> positionsAndInstructions = transformer.transform(inputDto.getInput());
-        positionsAndInstructions.forEach(s -> finalPositions.add(
+        List<SequenceDto> positionsAndInstructions = transformerImpl.transform(inputDto.getInput());
+        positionsAndInstructions.forEach(s -> finalPositionServices.add(
                 getFinalCoordinates(s, counter))
         );
 
         log.debug("Input processed successfully. Retrieving mowers coordinates.");
-        return finalPositions;
+        return finalPositionServices;
     }
 
     private void setMaxValues(InputDto inputDto) {
         maxPositionDto.setMaxValues(inputDto.getMaxHorizontalPosition(), inputDto.getMaxVerticalPosition());
     }
 
-    private Position getFinalCoordinates(SequenceDto sequenceDto, AtomicInteger counter) {
-        AtomicReference<Position> nextPosition = new AtomicReference<>();
+    private PositionDto getFinalCoordinates(SequenceDto sequenceDto, AtomicInteger counter) {
+        AtomicReference<PositionDto> nextPosition = new AtomicReference<>();
         counter.getAndIncrement();
-        nextPosition.set(sequenceDto.getPosition());
+        nextPosition.set(sequenceDto.getPositionDto());
         List<String> movements = sequenceDto.getInstructions();
 
         log.debug("Processing movements for mower {}", counter.get());
@@ -54,10 +56,11 @@ public class MowerServiceImpl implements MowerService {
         return nextPosition.get();
     }
 
-    private void executeMovements(List<String> movements, AtomicReference<Position> nextPosition, AtomicInteger counter) {
+    private void executeMovements(List<String> movements, AtomicReference<PositionDto> nextPosition, AtomicInteger counter) {
         for (String movement : movements) {
-            if (nextPosition.get().isPositionOutOfBounds(maxPositionDto, counter)) break;
-            moverStrategy.setNextPosition(movement, nextPosition);
+            PositionDto positionDto = nextPosition.get();
+            if (positionServiceImpl.isPositionOutOfBounds(maxPositionDto, positionDto.getCoordinates() ,counter)) break;
+            moverStrategyImpl.setNextPosition(movement, nextPosition);
         }
         log.debug("The last position of Mower {}  was: {}", counter.get(), nextPosition.get());
     }

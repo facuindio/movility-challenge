@@ -2,7 +2,8 @@ package com.es.movility.challenge;
 
 import com.es.movility.challenge.dtos.Coordinates;
 import com.es.movility.challenge.dtos.InputDto;
-import com.es.movility.challenge.services.position.Position;
+import com.es.movility.challenge.dtos.PositionDto;
+import com.es.movility.challenge.services.position.PositionServiceImpl;
 import com.es.movility.challenge.enums.CardinalOrientation;
 import com.es.movility.challenge.services.mower.MowerServiceImpl;
 import com.google.common.collect.Lists;
@@ -28,18 +29,18 @@ public class MowerServiceImplTest {
                 + "LMLMLMLMM" + Strings.LINE_SEPARATOR
                 + "3 3 E" + Strings.LINE_SEPARATOR
                 + "MMRMMRMRRM";
-        List<Position> expected = Lists.newArrayList();
+        List<PositionDto> expected = Lists.newArrayList();
 
         Coordinates coordinates = Coordinates.builder()
                 .horizontal(1)
                 .vertical(3)
                 .build();
 
-        Position position = Position.builder()
+        PositionDto positionDto = PositionDto.builder()
                 .coordinates(coordinates)
                 .cardinalOrientation(CardinalOrientation.N)
                 .build();
-        expected.add(position);
+        expected.add(positionDto);
 
 
         Coordinates secondCoordinates = Coordinates.builder()
@@ -47,14 +48,14 @@ public class MowerServiceImplTest {
                 .vertical(5)
                 .build();
 
-        Position secondPosition = Position.builder()
+        PositionDto secondPositionDto = PositionDto.builder()
                 .coordinates(secondCoordinates)
                 .cardinalOrientation(CardinalOrientation.E)
                 .build();
-        expected.add(secondPosition);
+        expected.add(secondPositionDto);
 
         //ACT
-        List<Position> actual = mowerService.processInput(InputDto.builder().input(input).build());
+        List<PositionDto> actual = mowerService.processInput(InputDto.builder().input(input).build());
 
         //ASSERT
         Assert.assertEquals(expected.get(0).getCardinalOrientation(),

@@ -2,6 +2,9 @@ package com.es.movility.challenge;
 
 import com.es.movility.challenge.dtos.InputDto;
 import com.es.movility.challenge.dtos.MaxPositionDto;
+import com.es.movility.challenge.dtos.PositionDto;
+import com.es.movility.challenge.services.position.PositionService;
+import com.es.movility.challenge.services.position.PositionServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import org.apache.logging.log4j.util.Strings;
