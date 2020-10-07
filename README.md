@@ -4,7 +4,7 @@ This project is my solution for a job interview challenge. As there was no speci
 # Running
 For executing the application you just need to run it.
 
-The solution is serving under the context http://localhost:8080/api/v1/position
+The solution is serving under the context http://localhost:8080/api/v1/positionServiceImpl
 
 Please consider that the verb is a POST, so you can execute it successfully with this body: 
 {
