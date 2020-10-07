@@ -18,7 +18,9 @@ public class InputDto {
     private String input;
 
     private String[] getPlateau() {
-        return Arrays.asList(this.input.split(Strings.LINE_SEPARATOR)).get(0).split(BLANK_SPACE);
+        return Arrays.asList(this.input
+                .split(Strings.LINE_SEPARATOR)).get(0)
+                .split(BLANK_SPACE);
     }
 
     public Integer getMaxHorizontalPosition() {
