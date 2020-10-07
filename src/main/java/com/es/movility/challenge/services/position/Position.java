@@ -23,8 +23,8 @@ public class Position implements Serializable {
     private Coordinates coordinates;
     private CardinalOrientation cardinalOrientation;
 
-    public boolean isNextPositionOutOfBounds(MaxPositionDto maxPositionDto, final AtomicInteger counter) {
-        if (isOutOfBounds(maxPositionDto)) {
+    public boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto, final AtomicInteger counter) {
+        if (isPositionOutOfBounds(maxPositionDto)) {
             String message = String.format(OUT_OF_PLATEAU_MSG, counter.get());
             log.debug(message);
             return true;
@@ -32,8 +32,8 @@ public class Position implements Serializable {
         return false;
     }
 
-    private boolean isOutOfBounds(MaxPositionDto maxPositionDto){
-        return coordinates.isOutOfRange(
+    private boolean isPositionOutOfBounds(MaxPositionDto maxPositionDto){
+        return coordinates.isPositionOutOfRange(
                 maxPositionDto.getMaxHorizontalPosition(),
                 maxPositionDto.getMaxVerticalPosition()
         );

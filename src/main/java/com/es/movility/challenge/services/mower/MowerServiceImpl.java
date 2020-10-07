@@ -31,7 +31,9 @@ public class MowerServiceImpl implements MowerService {
 
         log.debug("Processing input...");
         List<SequenceDto> positionsAndInstructions = transformer.transform(inputDto.getInput());
-        positionsAndInstructions.forEach(s -> finalPositions.add(this.getFinalCoordinates(s, counter)));
+        positionsAndInstructions.forEach(s -> finalPositions.add(
+                getFinalCoordinates(s, counter))
+        );
 
         log.debug("Input processed successfully. Retrieving mowers coordinates.");
         return finalPositions;
@@ -48,13 +50,13 @@ public class MowerServiceImpl implements MowerService {
         List<String> movements = sequenceDto.getInstructions();
 
         log.debug("Processing movements for mower {}", counter.get());
-        this.iterateMovements(movements, nextPosition, counter);
+        executeMovements(movements, nextPosition, counter);
         return nextPosition.get();
     }
 
-    private void iterateMovements(List<String> movements, AtomicReference<Position> nextPosition, AtomicInteger counter) {
+    private void executeMovements(List<String> movements, AtomicReference<Position> nextPosition, AtomicInteger counter) {
         for (String movement : movements) {
-            if (nextPosition.get().isNextPositionOutOfBounds(maxPositionDto, counter)) break;
+            if (nextPosition.get().isPositionOutOfBounds(maxPositionDto, counter)) break;
             moverStrategy.setNextPosition(movement, nextPosition);
         }
         log.debug("The last position of Mower {}  was: {}", counter.get(), nextPosition.get());
