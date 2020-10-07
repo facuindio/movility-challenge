@@ -1,4 +1,4 @@
-package com.es.movility.challenge.services.mower;
+package com.es.movility.challenge.services.mover;
 
 import com.es.movility.challenge.components.strategy.MoverStrategy;
 import com.es.movility.challenge.components.transformer.Transformer;
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MowerServiceImpl implements MowerService {
+public class MoverServiceImpl implements MoverService {
 
     private final Transformer transformer;
     private final MoverStrategy moverStrategy;
@@ -37,7 +37,7 @@ public class MowerServiceImpl implements MowerService {
                 getFinalCoordinates(s, counter))
         );
 
-        log.debug("Input processed successfully. Retrieving mowers coordinates.");
+        log.debug("Input processed successfully. Retrieving movers coordinates.");
         return finalPositionServices;
     }
 
@@ -51,7 +51,7 @@ public class MowerServiceImpl implements MowerService {
         nextPosition.set(sequenceDto.getPositionDto());
         List<String> movements = sequenceDto.getInstructions();
 
-        log.debug("Processing movements for mower {}", counter.get());
+        log.debug("Processing movements for sequence {}", counter.get());
         executeMovements(movements, nextPosition, counter);
         return nextPosition.get();
     }
@@ -62,7 +62,7 @@ public class MowerServiceImpl implements MowerService {
             if (positionService.isPositionOutOfBounds(maxPositionDto, positionDto.getCoordinates() ,counter)) break;
             moverStrategy.setNextPosition(movement, nextPosition);
         }
-        log.debug("The last position of Mower {}  was: {}", counter.get(), nextPosition.get());
+        log.debug("The last position the sequence {}  was: {}", counter.get(), nextPosition.get());
     }
 
 }
