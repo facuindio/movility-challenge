@@ -65,6 +65,4 @@ public class MowerServiceImplTest {
                 actual.get(0).getCoordinates().getVertical());
     }
 
-    //TODO: increase Coordinates.java coverage
-
 }
