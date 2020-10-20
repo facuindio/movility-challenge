@@ -3,7 +3,7 @@ package com.es.movility.challenge.services.mover;
 import com.es.movility.challenge.components.strategy.MoverStrategy;
 import com.es.movility.challenge.components.transformer.Transformer;
 import com.es.movility.challenge.dtos.InputDto;
-import com.es.movility.challenge.dtos.MaxPositionDto;
+import com.es.movility.challenge.entities.Area;
 import com.es.movility.challenge.dtos.PositionDto;
 import com.es.movility.challenge.dtos.SequenceDto;
 import com.es.movility.challenge.services.position.PositionService;
@@ -24,7 +24,7 @@ public class MoverServiceImpl implements MoverService {
     private final Transformer transformer;
     private final MoverStrategy moverStrategy;
     private final PositionService positionService;
-    private final MaxPositionDto maxPositionDto;
+    private final Area area;
 
     public List<PositionDto> processInput(InputDto inputDto) {
         List<PositionDto> finalPositionServices = Lists.newArrayList();
@@ -33,8 +33,9 @@ public class MoverServiceImpl implements MoverService {
 
         log.debug("Processing input...");
         List<SequenceDto> positionsAndInstructions = transformer.transform(inputDto.getInput());
-        positionsAndInstructions.forEach(s -> finalPositionServices.add(
-                getFinalCoordinates(s, counter))
+
+        positionsAndInstructions.forEach(
+                s -> finalPositionServices.add(getFinalCoordinates(s, counter))
         );
 
         log.debug("Input processed successfully. Retrieving movers coordinates.");
@@ -42,7 +43,7 @@ public class MoverServiceImpl implements MoverService {
     }
 
     private void setMaxValues(InputDto inputDto) {
-        maxPositionDto.setMaxValues(inputDto.getMaxHorizontalPosition(), inputDto.getMaxVerticalPosition());
+        area.setMaxValues(inputDto.getMaxHorizontalPosition(), inputDto.getMaxVerticalPosition());
     }
 
     private PositionDto getFinalCoordinates(SequenceDto sequenceDto, AtomicInteger counter) {
@@ -59,7 +60,7 @@ public class MoverServiceImpl implements MoverService {
     private void executeMovements(List<String> movements, AtomicReference<PositionDto> nextPosition, AtomicInteger counter) {
         for (String movement : movements) {
             PositionDto positionDto = nextPosition.get();
-            if (positionService.isPositionOutOfBounds(maxPositionDto, positionDto.getCoordinates() ,counter)) break;
+            if (positionService.isPositionOutOfBounds(area, positionDto.getCoordinatesDto() ,counter)) break;
             moverStrategy.setNextPosition(movement, nextPosition);
         }
         log.debug("The last position the sequence {}  was: {}", counter.get(), nextPosition.get());

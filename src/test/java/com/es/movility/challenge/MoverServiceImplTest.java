@@ -1,6 +1,6 @@
 package com.es.movility.challenge;
 
-import com.es.movility.challenge.dtos.Coordinates;
+import com.es.movility.challenge.dtos.CoordinatesDto;
 import com.es.movility.challenge.dtos.InputDto;
 import com.es.movility.challenge.dtos.PositionDto;
 import com.es.movility.challenge.enums.CardinalOrientation;
@@ -30,25 +30,25 @@ public class MoverServiceImplTest {
                 + "MMRMMRMRRM";
         List<PositionDto> expected = Lists.newArrayList();
 
-        Coordinates coordinates = Coordinates.builder()
+        CoordinatesDto coordinatesDto = CoordinatesDto.builder()
                 .horizontal(1)
                 .vertical(3)
                 .build();
 
         PositionDto positionDto = PositionDto.builder()
-                .coordinates(coordinates)
+                .coordinatesDto(coordinatesDto)
                 .cardinalOrientation(CardinalOrientation.N)
                 .build();
         expected.add(positionDto);
 
 
-        Coordinates secondCoordinates = Coordinates.builder()
+        CoordinatesDto secondCoordinatesDto = CoordinatesDto.builder()
                 .horizontal(1)
                 .vertical(5)
                 .build();
 
         PositionDto secondPositionDto = PositionDto.builder()
-                .coordinates(secondCoordinates)
+                .coordinatesDto(secondCoordinatesDto)
                 .cardinalOrientation(CardinalOrientation.E)
                 .build();
         expected.add(secondPositionDto);
@@ -59,10 +59,10 @@ public class MoverServiceImplTest {
         //ASSERT
         Assert.assertEquals(expected.get(0).getCardinalOrientation(),
                 actual.get(0).getCardinalOrientation());
-        Assert.assertEquals(expected.get(0).getCoordinates().getHorizontal(),
-                actual.get(0).getCoordinates().getHorizontal());
-        Assert.assertEquals(expected.get(0).getCoordinates().getVertical(),
-                actual.get(0).getCoordinates().getVertical());
+        Assert.assertEquals(expected.get(0).getCoordinatesDto().getHorizontal(),
+                actual.get(0).getCoordinatesDto().getHorizontal());
+        Assert.assertEquals(expected.get(0).getCoordinatesDto().getVertical(),
+                actual.get(0).getCoordinatesDto().getVertical());
     }
 
 }

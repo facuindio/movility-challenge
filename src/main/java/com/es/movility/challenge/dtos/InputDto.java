@@ -15,20 +15,24 @@ import java.util.Arrays;
 public class InputDto {
 
     private static final String BLANK_SPACE = " ";
+    private static final int HORIZONTAL_INDEX = 0;
+    private static final int VERTICAL_INDEX = 1;
     private String input;
 
-    private String[] getPlateau() {
-        return Arrays.asList(this.input
-                .split(Strings.LINE_SEPARATOR)).get(0)
-                .split(BLANK_SPACE);
+    private String[] getArea() {
+        return getFirstLine().split(BLANK_SPACE);
+    }
+
+    private String getFirstLine(){
+        return this.input.split(Strings.LINE_SEPARATOR)[0];
     }
 
     public Integer getMaxHorizontalPosition() {
-        return Integer.valueOf(this.getPlateau()[0]);
+        return Integer.valueOf(this.getArea()[HORIZONTAL_INDEX]);
     }
 
     public Integer getMaxVerticalPosition() {
-        return Integer.valueOf(this.getPlateau()[1]);
+        return Integer.valueOf(this.getArea()[VERTICAL_INDEX]);
     }
 
 }
