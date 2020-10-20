@@ -23,19 +23,20 @@ public class TransformerImpl implements Transformer{
 
     @Override
     public List<SequenceDto> transform(final String input) {
-        ArrayList<SequenceDto> sequences = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(input);
 
         log.debug("Transforming input...");
-        return transform(matcher, sequences);
+        return transform(matcher);
     }
 
-    private List<SequenceDto> transform(Matcher matcher, ArrayList<SequenceDto> sequences){
+    private List<SequenceDto> transform(Matcher matcher){
+        ArrayList<SequenceDto> sequences = new ArrayList<>();
+
         while (matcher.find()) {
-            String[] rawLine = matcher.group(0).split(Strings.LINE_SEPARATOR);
-            String[] position = rawLine[0].split(BLANK_SPACE);
-            SequenceDto sequenceDto = mapper.toDto(rawLine, position);
+            String[] line = matcher.group(0).split(Strings.LINE_SEPARATOR);
+            String[] position = line[0].split(BLANK_SPACE);
+            SequenceDto sequenceDto = mapper.toDto(line, position);
             sequences.add(sequenceDto);
         }
 
