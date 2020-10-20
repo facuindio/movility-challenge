@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Builder
-public class Coordinates {
+public class CoordinatesDto {
 
     private int horizontal;
     private int vertical;

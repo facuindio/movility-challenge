@@ -1,8 +1,7 @@
 package com.es.movility.challenge;
 
-import com.es.movility.challenge.components.transformer.Transformer;
 import com.es.movility.challenge.components.transformer.TransformerImpl;
-import com.es.movility.challenge.dtos.Coordinates;
+import com.es.movility.challenge.dtos.CoordinatesDto;
 import com.es.movility.challenge.dtos.PositionDto;
 import com.es.movility.challenge.dtos.SequenceDto;
 import com.es.movility.challenge.enums.CardinalOrientation;
@@ -31,13 +30,13 @@ public class TransformerImplTest {
                 + "1 2 N" + Strings.LINE_SEPARATOR
                 + "LMLMLMLMM";
 
-        Coordinates coordinates = Coordinates.builder()
+        CoordinatesDto coordinatesDto = CoordinatesDto.builder()
                 .horizontal(1)
                 .vertical(2)
                 .build();
 
         PositionDto positionDto = PositionDto.builder()
-                .coordinates(coordinates)
+                .coordinatesDto(coordinatesDto)
                 .cardinalOrientation(CardinalOrientation.N)
                 .build();
         SequenceDto sequenceDto = SequenceDto.builder()
@@ -58,10 +57,10 @@ public class TransformerImplTest {
                 actual.getInstructions());
         Assertions.assertEquals(expected.getPositionDto().getCardinalOrientation(),
                 actual.getPositionDto().getCardinalOrientation());
-        Assertions.assertEquals(expected.getPositionDto().getCoordinates().getHorizontal(),
-                actual.getPositionDto().getCoordinates().getHorizontal());
-        Assertions.assertEquals(expected.getPositionDto().getCoordinates().getVertical(),
-                actual.getPositionDto().getCoordinates().getVertical());
+        Assertions.assertEquals(expected.getPositionDto().getCoordinatesDto().getHorizontal(),
+                actual.getPositionDto().getCoordinatesDto().getHorizontal());
+        Assertions.assertEquals(expected.getPositionDto().getCoordinatesDto().getVertical(),
+                actual.getPositionDto().getCoordinatesDto().getVertical());
     }
 
 }

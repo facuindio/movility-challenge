@@ -14,14 +14,14 @@ public class PositionDto implements Serializable {
 
     private static final String POSITION_STRING_FORMAT = "%s %s %s";
 
-    private Coordinates coordinates;
+    private CoordinatesDto coordinatesDto;
     private CardinalOrientation cardinalOrientation;
 
     @Override
     public String toString() {
         return String.format(POSITION_STRING_FORMAT,
-                coordinates.getHorizontal(),
-                coordinates.getVertical(),
+                coordinatesDto.getHorizontal(),
+                coordinatesDto.getVertical(),
                 this.cardinalOrientation.name());
     }
 

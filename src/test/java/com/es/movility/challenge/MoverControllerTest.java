@@ -1,7 +1,7 @@
 package com.es.movility.challenge;
 
 import com.es.movility.challenge.dtos.InputDto;
-import com.es.movility.challenge.dtos.MaxPositionDto;
+import com.es.movility.challenge.entities.Area;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import org.apache.logging.log4j.util.Strings;
@@ -29,7 +29,7 @@ public class MoverControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MaxPositionDto maxPositionDto;
+    private Area area;
 
     @Test
     public void givenChallengeInput_shouldSolveTheProblem() throws Exception {
@@ -50,8 +50,8 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("1"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("3"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("3"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("N"))
                 .andReturn();
     }
@@ -79,14 +79,14 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("1"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("3"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("3"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("W"))
                 .andReturn();
     }
 
     @Test
-    public void givenCoordinatesThatExceedThePlateauVertically_shouldInformMowerOutOfBounds() throws Exception {
+    public void givenCoordinatesThatExceedTheAreaVertically_shouldInformMowerOutOfBounds() throws Exception {
         //ARRANGE
         String input =
                 "4 4" + Strings.LINE_SEPARATOR
@@ -102,14 +102,14 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("1"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("5"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("5"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("N"))
                 .andReturn();
     }
 
     @Test
-    public void givenCoordinatesThatExceedThePlateauHorizontally_shouldInformMowerOutOfBounds() throws Exception {
+    public void givenCoordinatesThatExceedTheAreaHorizontally_shouldInformMowerOutOfBounds() throws Exception {
         //ARRANGE
         String input =
                 "4 4" + Strings.LINE_SEPARATOR
@@ -125,8 +125,8 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("5"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("2"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("5"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("2"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("W"))
                 .andReturn();
     }
@@ -148,8 +148,8 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("1"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("-1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("-1"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("S"))
                 .andReturn();
     }
@@ -171,8 +171,8 @@ public class MoverControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coordinates.horizontal").value("-1"))
-                .andExpect(jsonPath("$[0].coordinates.vertical").value("1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.horizontal").value("-1"))
+                .andExpect(jsonPath("$[0].coordinatesDto.vertical").value("1"))
                 .andExpect(jsonPath("$[0].cardinalOrientation").value("E"))
                 .andReturn();
 
